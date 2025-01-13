@@ -1,0 +1,11 @@
+gitit:
+  image: xlrl/gitit:develop
+  ports:
+    - "4000:4000"
+  restart: unless-stopped
+  environment:
+    - GIT_USER_NAME=foo
+    - GIT_USER_EMAIL=foo@bar.baz
+  volumes:
+    - ./wikidata:/gitit/wikidata
+
