@@ -1,19 +1,16 @@
-FROM library/alpine:3.19
+FROM library/debian:12.8
 LABEL description="The gitit server as a Docker image." \
     maintainer="Alexander Mueller <XelaRellum@web.de>"
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache cabal g++ git ghc libc-dev libffi-dev musl zlib-dev
+RUN apt update && apt upgrade -y && \
+    apt install -y git gitit=0.15.1.0+dfsg-2+b6
 
 COPY --chown=root:root root /
 
 RUN chmod 755 /var/gitit/run-gitit.sh && \
     mkdir /gitit && \
-    adduser -D -h /var/gitit -s /bin/false -u 1000 gitit gitit
-
-RUN cabal update && \
-    cabal install --global gitit-0.15.1.2
+    adduser --uid 1000 --home /var/gitit --no-create-home --shell /bin/sh gitit
 
 VOLUME ["/gitit/wikidata"]
 EXPOSE 4000
-ENTRYPOINT ["/var/gitit/run-gitit.sh"]
+ENTRYPOINT /var/gitit/run-gitit.sh
