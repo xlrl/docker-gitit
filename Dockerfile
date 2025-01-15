@@ -8,9 +8,11 @@ RUN apt update && apt upgrade -y && \
 COPY --chown=root:root root /
 
 RUN chmod 755 /var/gitit/run-gitit.sh && \
-    mkdir /gitit && \
-    adduser --uid 1000 --home /var/gitit --no-create-home --shell /bin/sh gitit
+    adduser --uid 1000 --home /var/gitit --no-create-home --shell /bin/sh gitit && \
+    chown gitit:gitit -R /var/gitit
 
-VOLUME ["/gitit/wikidata"]
+VOLUME ["/gitit"]
+
 EXPOSE 4000
-ENTRYPOINT /var/gitit/run-gitit.sh
+
+ENTRYPOINT /var/gitit/entrypoint.sh
