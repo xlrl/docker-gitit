@@ -3,7 +3,9 @@ LABEL description="The gitit server as a Docker image." \
     maintainer="Alexander Mueller <XelaRellum@web.de>"
 
 RUN apt update && apt upgrade -y && \
-    apt install -y git gitit=0.15.1.0+dfsg-2+b6
+    apt install -y git gitit=0.15.1.0+dfsg-2+b6 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY --chown=root:root root /
 
