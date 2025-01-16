@@ -14,8 +14,6 @@ else
 fi
 
 echo -n Create default configuration...
-pwd
-ls -al
 if test -f conf/gitit.conf ; then
     echo Skipped
 else
