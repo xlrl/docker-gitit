@@ -1,9 +1,24 @@
 #/bin/sh
 set -e
-chown -R gitit:gitit /gitit
-git config --global user.name $GIT_USER_NAME
-git config --global user.email $GIT_USER_EMAIL
-# for whatever reason haskell doesn't like the locale
-export LANG=C.UTF-8
+
 cd /gitit
-su gitit -c "gitit -p 4000"
+
+git config --global init.defaultBranch main
+
+echo -n Initialize git repository...
+if test -d .git ; then
+    echo Skipped
+else
+    git init
+    echo Done
+fi
+
+echo -n Create default configuration...
+if test -f conf/gitit.conf ; then
+    echo Skipped
+else
+    gitit --print-default-config > conf/gitit.conf
+    echo Done
+fi
+
+gitit --port=4000 --config-file=conf/gitit.conf
